@@ -22,7 +22,7 @@ axios({
     params: {
         'api-version': '3.0',
         'from': 'en',
-        'to': 'fr'
+        'to': 'he'
     },
     data: [{
         'text': 'I would really like to drive your car around the block a few times!'
@@ -31,3 +31,8 @@ axios({
 }).then(function(response){
     console.log(JSON.stringify(response.data, null, 4));
 })
+
+axios.get(`${endpoint}/Languages?api-version=3.0&scope=translation`)
+.then(function(response){
+    console.log(JSON.stringify(response.data, null, 4));
+}).catch((err) => {console.log(err.message);})
