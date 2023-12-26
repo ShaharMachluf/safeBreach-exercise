@@ -4,6 +4,7 @@ const cheerio = require('cheerio');
 const url = 'https://parade.com/968666/parade/chuck-norris-jokes/';
 const apikey = 'cdbd76fb06ca1cd066a0ea48d6350b3b1852af6b';
 
+//get the chosen joke from the Chuck Norris's jokes webpage
 module.exports = async function getJoke(index){
     try{
         const response = await axios({

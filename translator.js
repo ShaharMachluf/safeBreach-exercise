@@ -5,7 +5,7 @@ let key = "68798218d7b840a0abc88fff0bf6651c";
 let endpoint = "https://api.cognitive.microsofttranslator.com";
 let location = "germanywestcentral";
 
-
+//translate the text to the chosen language
 module.exports = async function translate(language, text) {
     try {
         const languageCode = await getLanguageCode(language);
@@ -38,11 +38,12 @@ module.exports = async function translate(language, text) {
     }
 }
 
+//get he language code of the chosen language
 async function getLanguageCode(language) {
     try {
         const response = await axios.get(`${endpoint}/Languages?api-version=3.0&scope=translation`);
         const languages = response.data.translation;
-        const code = await Object.keys(languages).find(key => languages[key].name == language);
+        const code = await Object.keys(languages).find(key => languages[key].name.toUpperCase() == language.toUpperCase());
         return code;
     } catch (err) {
         console.error(err.message);
