@@ -10,31 +10,35 @@ let location = "germanywestcentral";
 
 
 module.exports = async function translate(language, text) {
-    const languageCode = await getLanguageCode(language)
-    console.log(languageCode);
-    axios({
-        baseURL: endpoint,
-        url: '/translate',
-        method: 'post',
-        headers: {
-            'Ocp-Apim-Subscription-Key': key,
-            // location required if you're using a multi-service or regional (not global) resource.
-            'Ocp-Apim-Subscription-Region': location,
-            'Content-type': 'application/json',
-            'X-ClientTraceId': uuidv4().toString()
-        },
-        params: {
-            'api-version': '3.0',
-            'from': 'en',
-            'to': languageCode
-        },
-        data: [{
-            'text': text
-        }],
-        responseType: 'json'
-    }).then(function (response) {
-        console.log(JSON.stringify(response.data, null, 4));
-    })
+    try {
+        const languageCode = await getLanguageCode(language);
+
+        const response = await axios({
+            baseURL: endpoint,
+            url: '/translate',
+            method: 'post',
+            headers: {
+                'Ocp-Apim-Subscription-Key': key,
+                'Ocp-Apim-Subscription-Region': location,
+                'Content-type': 'application/json',
+                'X-ClientTraceId': uuidv4().toString()
+            },
+            params: {
+                'api-version': '3.0',
+                'from': 'en',
+                'to': languageCode
+            },
+            data: [{
+                'text': text
+            }],
+            responseType: 'json'
+        });
+
+        return response.data[0].translations[0].text;
+    } catch (error) {
+        console.error('Error in translate function:', error);
+        throw error; // Optionally rethrow the error if necessary
+    }
 }
 
 async function getLanguageCode(language) {

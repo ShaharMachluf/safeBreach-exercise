@@ -18,14 +18,23 @@ bot.start(ctx => {
 bot.launch();
 
 bot.on(message("text"), async ctx => {
-    try {
-        language = ctx.message.text.split(' ')[2];
-        const reply = await translate(language, 'no problem');
-        // console.log(reply);
-        ctx.reply(reply);
-    } catch (error) {
-        console.error('Error in bot.on text event:', error);
-        // Handle errors if necessary
-        ctx.reply('An error occurred during translation.');
+    const t = ctx.message.text;
+    if(t.includes("set language")){
+        try {
+            language = t.split(' ')[2];
+            const reply = await translate(language, 'no problem');
+            // console.log("reply: " + reply);
+            ctx.reply(reply);
+        } catch (error) {
+            console.error('Error in bot.on text event:', error);
+            // Handle errors if necessary
+            ctx.reply('An error occurred during translation.');
+        }
+    } else if(!isNaN(t) && parseInt(t) > 0 && parseInt(t) < 102){
+
+    } else{
+        ctx.reply("Not a valid request.\n you can either set a language ('set language to <language>') or choose a number of joke (1-101)")
     }
+    
 });
+
